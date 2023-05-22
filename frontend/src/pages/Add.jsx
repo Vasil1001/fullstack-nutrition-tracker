@@ -30,13 +30,13 @@ export default function Add() {
   console.log(book)
 
   return (
-    <div className="mx-auto mt-6 flex flex-col rounded-lg border border-[#e1e0e0] bg-[#e8e8e8] p-4  justify-center gap-5">
+    <div className="mx-auto mt-6 flex flex-col justify-center gap-5 rounded-lg border border-[#e1e0e0]  bg-[#e8e8e8] p-4">
       <h1>Add a new book</h1>
-      <input className='p-2 rounded-lg shadow-sm' type="text" placeholder="Title" name="title" onChange={handleChange} />
-      <input className='p-2 rounded-lg shadow-sm' type="text" placeholder="Description" name="desc" onChange={handleChange} />
-      <input className='p-2 rounded-lg shadow-sm' type="number" placeholder="Price" name="price" onChange={handleChange} />
-      <input className='p-2 rounded-lg shadow-sm' type="text" placeholder="Cover" name="cover" onChange={handleChange} />
-      <button className="bg-orange-400 hover:bg-orange-500 p-2 rounded-lg shadow-sm px-4" onClick={handleClick}>
+      <input className="rounded-lg p-2 shadow-sm" type="text" placeholder="Title" name="title" onChange={handleChange} />
+      <input className="rounded-lg p-2 shadow-sm" type="text" placeholder="Description" name="desc" onChange={handleChange} />
+      <input className="rounded-lg p-2 shadow-sm" type="number" placeholder="Price" name="price" onChange={handleChange} />
+      <input className="rounded-lg p-2 shadow-sm" type="text" placeholder="Cover" name="cover" onChange={handleChange} />
+      <button className="rounded-lg bg-orange-400 p-2 px-4 shadow-sm hover:bg-orange-500" onClick={handleClick}>
         Add
       </button>
     </div>

@@ -3,6 +3,8 @@ const cors = require("cors")
 const colors = require("colors")
 const mysql = require("mysql")
 const db = require("./config/db.mysql") // ? DB Connection at config folder
+const connectDB = require("./config/db.mongo")
+require('dotenv').config()
 
 // * Initialize port to listen for requests and express
 const PORT = process.env.PORT || 8080
@@ -13,55 +15,57 @@ app.use(express.json()) // parse requests of content-type - application/json
 app.use(express.urlencoded({ extended: true })) // parse requests of content-type - application/x-www-form-urlencoded
 app.use(cors()) // Use cors middleware
 
+connectDB() // ? DB Connection at config folder
+
 // * Set Routes
-// app.use("/api/users", require("./routes/userRoutes"))
-// app.use("/api/tickets", require("./routes/ticketRoutes"))
+app.use("/", require("./routes/bookRoutes"))
 
-// * Serve Frontend - allow backend to be reached from frontend - get req from user and send a response
-app.get("/", (req, res) => {
-  res.json({ message: "Hello, Express.js json!" })
-})
 
-app.get("/books", (req, res) => {
-  const q = "SELECT * FROM books"
-  db.query(q, (err, data) => {
-    if (err) throw err
-    return res.json(data)
-  })
-})
+// // * Serve Frontend - allow backend to be reached from frontend - get req from user and send a response
+// app.get("/", (req, res) => {
+//   res.json({ message: "Hello, Express.js json!" })
+// })
 
-app.post("/books", (req, res) => {
-  const q = "INSERT INTO books (`title`, `desc`, `price`, `cover`) VALUES (?)"
-  const values = [req.body.title, req.body.desc, req.body.price, req.body.cover]
+// app.get("/books", (req, res) => {
+//   const q = "SELECT * FROM books"
+//   db.query(q, (err, data) => {
+//     if (err) throw err
+//     return res.json(data)
+//   })
+// })
 
-  db.query(q, [values], (err, data) => {
-    if (err) throw err
-    return res.json("New book added successfully")
-  })
-})
+// app.post("/books", (req, res) => {
+//   const q = "INSERT INTO books (`title`, `desc`, `price`, `cover`) VALUES (?)"
+//   const values = [req.body.title, req.body.desc, req.body.price, req.body.cover]
 
-app.delete("/books/:id", (req, res) => {
-  const bookId = req.params.id
-  const q = "DELETE FROM books WHERE id = ?"
+//   db.query(q, [values], (err, data) => {
+//     if (err) throw err
+//     return res.json("New book added successfully")
+//   })
+// })
 
-  db.query(q, [bookId], (err, data) => {
-    if (err) return res.json(err)
-    return res.json("Book deleted successfully")
-  })
-})
+// app.delete("/books/:id", (req, res) => {
+//   const bookId = req.params.id
+//   const q = "DELETE FROM books WHERE id = ?"
 
-app.put("/books/:id", (req, res) => {
-  const bookId = req.params.id
-  const q =
-    "UPDATE books SET `title`= ?, `desc`= ?, `price`= ?, `cover`= ? WHERE id = ?"
+//   db.query(q, [bookId], (err, data) => {
+//     if (err) return res.json(err)
+//     return res.json("Book deleted successfully")
+//   })
+// })
 
-  const values = [req.body.title, req.body.desc, req.body.price, req.body.cover]
+// app.put("/books/:id", (req, res) => {
+//   const bookId = req.params.id
+//   const q =
+//     "UPDATE books SET `title`= ?, `desc`= ?, `price`= ?, `cover`= ? WHERE id = ?"
 
-  db.query(q, [...values, bookId], (err, data) => {
-    if (err) return res.send(err)
-    return res.json(data)
-  })
-})
+//   const values = [req.body.title, req.body.desc, req.body.price, req.body.cover]
+
+//   db.query(q, [...values, bookId], (err, data) => {
+//     if (err) return res.send(err)
+//     return res.json(data)
+//   })
+// })
 
 // * Listen to port for requests
 app.listen(PORT, () =>

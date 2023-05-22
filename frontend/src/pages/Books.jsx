@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { BsTrash3 } from 'react-icons/bs'
+
 export default function Books() {
   const [books, setBooks] = React.useState([])
 
@@ -30,7 +31,7 @@ export default function Books() {
       await axios.delete(`http://localhost:8080/books/${id}`)
       window.location.reload()
     } catch (error) {
-      console.log(error)
+      console.log(`ERROR ${error}`)
     }
   }
 
@@ -44,9 +45,9 @@ export default function Books() {
       </div>
 
       <div className="mx-auto mt-5 grid grid-cols-4 items-center justify-center gap-4">
-        <button className="min-h-full rounded-lg border border-[#e1e0e0] bg-[#eae8e8] p-4 hover:bg-[#d5d5d5]">
-          <Link to="/add">Add a new book</Link>
-        </button>
+        <Link className="flex min-h-full  flex-col justify-center rounded-lg border border-[#e1e0e0] bg-[#eae8e8] p-4 hover:bg-[#d5d5d5]" to="/add">
+          <button>Add a new book</button>
+        </Link>
         {books.map((book) => (
           <div className="flex flex-col rounded-lg border border-[#e1e0e0] bg-[#e8e8e8] p-4" key={book.id}>
             {book.cover && <img src={book.cover} alt={book.title} className="h-[250px] w-[200px] bg-emerald-400 object-cover" />}
@@ -54,13 +55,19 @@ export default function Books() {
             <p>{book.desc}</p>
             <span>{book.price}</span>
             <div className="mt-2  flex gap-2">
-              <button className="grow rounded-lg border bg-[#f9f7f7] shadow-sm hover:border-gray-300">
-                <Link to={`/update/${book.id}`}>Update</Link>
-              </button>
-              <button onClick={() => handleDelete(book.id)} className="rounded-lg shadow-sm">
-                <BsTrash3 size={'1.2rem'} color="rgb(242, 100, 100)" />
+              <Link className="grow rounded-lg border bg-[#f9f7f7] py-1 text-center shadow-sm hover:border-gray-300" to={`/update/${book._id}`}>
+                <button>Edit</button>
+              </Link>
+              <button
+                onClick={() => handleDelete(book._id)}
+                className="rounded-lg border bg-[#f9f7f7] px-2 py-1 text-center shadow-sm hover:border-gray-300"
+              >
+                <BsTrash3 size={'1.3rem'} color="rgb(242, 100, 100)" />
               </button>
             </div>
+            <Link className="mt-2 grow rounded-lg border bg-[#f9f7f7] py-1 text-center shadow-sm hover:border-gray-300" to={`/update/${book._id}`}>
+              <button>Add to cart</button>
+            </Link>
           </div>
         ))}
       </div>
